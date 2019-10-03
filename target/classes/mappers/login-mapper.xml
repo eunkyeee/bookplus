@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.login-mapper">
+
+<!-- 로그인 -->
+<select id="isMember" parameterType="Map" resultType="java.lang.Integer">
+	select count(id) from member where id=#{id} and pw=#{pw}
+	
+</select>
+
+<select id="getMember" parameterType="Map" resultType="com.kh.myapp.member.dto.MemberDTO">
+	select id,pw,tel,nickname,gender,region from member where id=#{id} and pw=#{pw}
+</select>
+
+
+</mapper>

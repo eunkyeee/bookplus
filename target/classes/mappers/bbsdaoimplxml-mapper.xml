@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mappers.bbsdaoimplxml-mapper">
+<!-- 게시글 작성 -->
+<!-- id값은 BbsDAOImplXML아이디와 동일 -->
+<insert id="write" parameterType="com.kh.myapp.bbs.dto.BbsDTO"> 
+	insert into board (bnum, btitle, bid, bnickname, bhit, bcontent, bgroup, bstep, bindent)
+							values(board_seq.nextval,#{btitle},#{bid},#{bnickname},0,#{bcontent},board_seq.currval,0,0)
+</insert>
+
+<!-- 게시글 수정 -->
+<update id="modify" parameterType="com.kh.myapp.bbs.dto.BbsDTO">
+	update board
+	set btitle= #{btitle} , budate=sysdate , bcontent= #{bcontent}
+	where bnum=#{bnum}
+</update>
+
+<!-- 게시글 삭제 -->
+<delete id="delete" parameterType="String">
+	delete from board where bnum=#{bnum}
+</delete>
+
+<!-- 게시글 보기 -->
+<select id="view" parameterType="String" resultType="com.kh.myapp.bbs.dto.BbsDTO">
+	select bnum,btitle,bid,bnickname,bcdate,budate,bhit,bcontent,bgroup,bstep,bindent
+	from board
+	where bnum= #{bnum}
+</select>
+
+<!--조회수 증가 -->
+<update id="updateHit" parameterType="String">
+	update board set bhit=bhit+1 where bnum=#{bnum}
+</update>
+
+<!-- 게시글 목록 보기 -->
+<!-- 1)전체 -->
+<select id="list" resultType="com.kh.myapp.bbs.dto.BbsDTO">
+	select bnum,btitle,bid,bnickname,bcdate,budate,bhit,bcontent,bgroup,bstep,bindent
+	from board
+</select>
+
+<!-- 2)검색어 없는 경우 -->
+<select id="list2" parameterType="java.util.Map" resultType="com.kh.myapp.bbs.dto.BbsDTO">
+	select t2.*
+	from ( select row_number() over (order by bgroup desc, bstep asc) as num, t1.*
+				 from board t1 ) t2
+	where num between #{startRec} and #{endRec}
+</select>
+
+<!-- 3)검색어 있는 경우 -->
+<select id="list3" parameterType="java.util.Map" resultType="com.kh.myapp.bbs.dto.BbsDTO">
+	select t2.*
+		from (select row_number() over (order by bgroup desc, bstep asc) as num, t1.*
+					from board t1 
+				 	where bnum>0
+	<bind name="keyword" value="'%'+keyword+'%'"/> <!-- '%' || ? || '%' ==> #{keyword} 대신 사용하게끔 바꿈-->
+	<choose>
+	<!-- 제목+내용 -->
+		<when test="searchType=='TC'.toString()">
+			and btitle like #{keyword}
+			or bcontent like #{keyword}
+		</when>
+		<!-- 제목 -->
+		<when test="searchType=='T'.toString()">
+			and btitle like #{keyword}
+		</when>
+		<!-- 내용 -->
+		<when test="searchType=='C'.toString()">
+			and bcontent like #{keyword}
+		</when>
+		<!-- 닉네임 -->
+		<when test="searchType=='N'.toString()">
+			and bnickname like #{keyword}
+		</when>
+		<!-- 아이디 -->
+		<when test="searchType=='I'.toString()">
+			and bid like #{keyword}
+		</when>
+		<!-- 제목+내용+닉네임 -->
+		<otherwise>
+			and btitle like #{keyword}
+						or bcontent like #{keyword}
+						or bnickname like #{keyword}
+		</otherwise>
+	</choose>
+	
+	) t2 where num between #{startRec} and #{endRec}
+</select>
+
+<!-- 게시글 답글 -->
+<insert id="reply" parameterType="com.kh.myapp.bbs.dto.BbsDTO">
+	insert into board (bnum, btitle, bid, bnickname, bhit, bcontent, bgroup, bstep, bindent)
+							values(board_seq.nextval,#{btitle},#{bid},#{bnickname},0,#{bcontent},#{bgroup},#{bstep}+1,#{bindent}+1)
+</insert>
+
+<update id="updateStep" parameterType="java.util.Map">
+	update board
+		 set bstep = bstep + 1
+	where bgroup=#{bgroup} and bstep>#{bstep}
+</update>
+
+<!-- 게시글 총계 -->
+<!-- 1)검색어 없는 경우 -->
+<select id="totalRec" resultType="Integer">
+	select count(bnum) totalcnt from board
+</select>
+
+<!-- 2)검색어 있는 경우 -->
+<select id="searchTotalRec" parameterType="java.util.Map" resultType="Integer">
+		select count(bnum) totalRec
+		from (select row_number() over (order by bgroup desc, bstep asc) as num, t1.*
+					from board t1
+					where bnum>0
+					
+	<bind name="keyword" value="'%'+keyword+'%'"/> <!-- '%' || ? || '%' ==> #{keyword} 대신 사용하게끔 바꿈-->
+	<choose>
+	<!-- 제목+내용 -->
+		<when test="searchType=='TC'.toString()">
+			and btitle like #{keyword}
+			or bcontent like #{keyword}
+		</when>
+		<!-- 제목 -->
+		<when test="searchType=='T'.toString()">
+			and btitle like #{keyword}
+		</when>
+		<!-- 내용 -->
+		<when test="searchType=='C'.toString()">
+			and bcontent like #{keyword}
+		</when>
+		<!-- 닉네임 -->
+		<when test="searchType=='N'.toString()">
+			and bnickname like #{keyword}
+		</when>
+		<!-- 아이디 -->
+		<when test="searchType=='I'.toString()">
+			and bid like #{keyword}
+		</when>
+		<!-- 제목+내용+닉네임 -->
+		<otherwise>
+			and btitle like #{keyword}
+			or bcontent like #{keyword}
+			or bnickname like #{keyword}
+		</otherwise>
+	</choose>
+	
+	) t2
+</select>
+
+</mapper>
