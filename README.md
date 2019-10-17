@@ -1,6 +1,6 @@
 
 <h1>BOOKPLUS<h1>
-  <br>
+  
   <h2>동기</h2>
 <ul>
   <li>홈페이지를 만들면서 Spring Framework,Spring Security와 MVC2를 공부하고 구현하기 위해 프로젝트를 제작했습니다.<br>
