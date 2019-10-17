@@ -1,6 +1,6 @@
 
 <h1>BOOKPLUS</h1>
-<img width="800" height="400" alt="bookplus" src="https://user-images.githubusercontent.com/54618753/66983648-0484a880-f0f4-11e9-9c84-9ec9cd3cbbc1.png">
+<img width="800" height="500" alt="bookplus" src="https://user-images.githubusercontent.com/54618753/66983648-0484a880-f0f4-11e9-9c84-9ec9cd3cbbc1.png">
 <br>
   <h2>동기</h2>
 <ul>
