@@ -1,6 +1,6 @@
 
 <h1>BOOKPLUS</h1>
-<img src = '/img/bookplus.png' width = '200px' height = '200px' />
+<img src = './img/bookplus.png' width = '200px' height = '200px' />
 <br>
   <h2>동기</h2>
 <ul>
