@@ -1,11 +1,10 @@
-# bookplus
-개인 블로그
-<div>BOOKPLUS<div>
-  
+
+<h1>BOOKPLUS<h1>
+  <br>
   <h2>동기</h2>
 <ul>
-  <li>홈페이지를 만들면서 Spring Framework,Spring Security와 MVC2를 공부하기위해서 제작하게 되었습니다.<br>
-      뿐만아니라 웹표준(HTML,CSS,JS)과 bootstrap4,Ajax,Restful API에 대한 연구 및 공부도 필요하였습니다. </li>
+  <li>홈페이지를 만들면서 Spring Framework,Spring Security와 MVC2를 공부하고 구현하기 위해 프로젝트를 제작했습니다.<br>
+      뿐만아니라 교육 중에 웹표준(HTML,CSS,JS)과 bootstrap,Ajax,Restful API에 대한 실습을 수행하였습니다. </li>
 </ul>
   
   <h2>개발환경</h2>
@@ -20,4 +19,15 @@
   <li>Bootstrap 4</li>
   <li>JQuery 3</li>
   <li>Ajax</li>
+</ul>
+
+<h2>기능</h2>
+  <ul>
+  <li>회원가입</li>
+  <li>로그인, 로그아웃</li>
+  <li>회원수정, 탈퇴</li>
+  <li>개시판 CRUD</li>
+  <li>댓글 구현, 추천 비추천 기능</li>
+  <li>게시판 검색</li>
+  <li>페이징 기능</li>
 </ul>
